@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>🔎SEARCHeveryting</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* LOGO */
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    color: #38bdf8;
+}
+
+/* MENU */
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+/* BUTTON STYLE */
+.nav-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+    border: 1px solid transparent;
+}
+
+/* LOGIN */
+.btn-outline {
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+}
+
+.btn-outline:hover {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+/* REGISTER */
+.btn-primary {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.btn-primary:hover {
+    background: #0ea5e9;
+}
+
+/* DASHBOARD */
+.btn-glass {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-glass:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* CONTAINER */
+.container {
+    padding: 40px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 46px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* LABEL */
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #94a3b8;
+    font-weight: 500;
+    border-radius: 15px;
+}
+
+/* INPUT */
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* PLACEHOLDER */
+.form-input::placeholder {
+    color: #64748b;
+}
+
+/* FOCUS EFFECT */
+.form-input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56,189,248,0.3);
+}
+
+/* BUTTON */
+.form-btn {
+    width: 107%;
+    padding: 12px;
+    border-radius: 20px;
+    border: none;
+    background: #38bdf8;
+    color: #0f172a;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-btn:hover {
+    background: #0ea5e9;
+}
+
+/* ERROR */
+.form-error {
+    color: #f87171;
+    font-size: 13px;
+}
+/* DASHBOARD */
+.dashboard {
+    display: flex;
+    gap: 20px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 230px;
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 12px;
+    height: 85vh;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #cbd5f5;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+}
+
+/* STATS */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-card h4 {
+    color: #94a3b8;
+}
+
+.stat-card p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+/* RESULT */
+.result-item {
+    background: rgba(255,255,255,0.03);
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border-left: 4px solid #38bdf8;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+/* BADGE */
+.badge {
+    background: #38bdf8;
+    color: #0f172a;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/* DATE */
+.date {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* VALUE */
+.value {
+    font-weight: 500;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo">🔎SEARCHeveryting</div>
+
+    <div class="nav-links">
+        {% if user.is_authenticated %}
+            <a href="/dashboard/" class="nav-btn btn-glass">Dashboard</a>
+            <a href="/logout/" class="nav-btn btn-outline">Logout</a>
+        {% else %}
+            <a href="/login/" class="nav-btn btn-outline">Login</a>
+            <a href="/register/" class="nav-btn btn-primary">Register</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1348 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>OSINT PRO Dashboard</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* =========================
+   DYNAMIC BACKGROUND
+========================= */
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#020617;
+    overflow-x:hidden;
+    position:relative;
+    color:white;
+}
+
+/* Background principal */
+
+.animated-bg{
+
+    position:fixed;
+
+    width:100%;
+    height:100%;
+
+    top:0;
+    left:0;
+
+    overflow:hidden;
+
+    z-index:-1;
+
+    background:
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a,
+            #111827
+        );
+}
+
+/* Cercles lumineux */
+
+.animated-bg span{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:rgba(99,102,241,0.15);
+
+    animation:float 15s infinite linear;
+
+    filter:blur(25px);
+}
+
+/* DIFFERENT CIRCLES */
+
+.animated-bg span:nth-child(1){
+
+    width:300px;
+    height:300px;
+
+    left:10%;
+    top:20%;
+
+    background:rgba(139,92,246,0.18);
+
+    animation-duration:18s;
+}
+
+.animated-bg span:nth-child(2){
+
+    width:250px;
+    height:250px;
+
+    right:10%;
+    top:10%;
+
+    background:rgba(37,99,235,0.18);
+
+    animation-duration:12s;
+}
+
+.animated-bg span:nth-child(3){
+
+    width:350px;
+    height:350px;
+
+    left:40%;
+    bottom:10%;
+
+    background:rgba(16,185,129,0.12);
+
+    animation-duration:20s;
+}
+
+.animated-bg span:nth-child(4){
+
+    width:220px;
+    height:220px;
+
+    right:30%;
+    bottom:20%;
+
+    background:rgba(236,72,153,0.12);
+
+    animation-duration:16s;
+}
+
+.animated-bg span:nth-child(5){
+
+    width:180px;
+    height:180px;
+
+    left:70%;
+    top:50%;
+
+    background:rgba(59,130,246,0.15);
+
+    animation-duration:10s;
+}
+
+/* Animation */
+
+@keyframes float{
+
+    0%{
+        transform:
+            translateY(0px)
+            translateX(0px)
+            scale(1);
+    }
+
+    25%{
+        transform:
+            translateY(-40px)
+            translateX(30px)
+            scale(1.1);
+    }
+
+    50%{
+        transform:
+            translateY(20px)
+            translateX(-20px)
+            scale(0.9);
+    }
+
+    75%{
+        transform:
+            translateY(-30px)
+            translateX(40px)
+            scale(1.05);
+    }
+
+    100%{
+        transform:
+            translateY(0px)
+            translateX(0px)
+            scale(1);
+    }
+}
+
+/* =========================
+   DRAWER SIDEBAR
+========================= */
+
+.sidebar{
+
+    width:270px;
+    height:100vh;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    background:linear-gradient(
+        180deg,
+        #050816,
+        #0f172a
+    );
+
+    border-right:1px solid rgba(255,255,255,0.08);
+
+    padding:25px;
+
+    overflow-y:auto;
+
+    box-shadow:0 0 30px rgba(0,0,0,0.6);
+
+    transition:0.4s ease;
+
+    z-index:999;
+}
+
+/* SIDEBAR FERMEE */
+
+.sidebar.closed{
+
+    left:-270px;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo{
+
+    text-align:center;
+
+    margin-bottom:45px;
+}
+
+.logo img{
+
+    width:167px;
+    height:151px;
+
+    border-radius:84px;
+
+    object-fit:cover;
+
+    box-shadow:
+        0 0 25px rgba(37,99,235,0.4),
+        inset -1px -12px 6px 2px rgba(255,255,255,0.25);
+
+    transition:0.3s;
+}
+
+.logo img:hover{
+
+    transform:scale(1.03);
+
+    box-shadow:
+        0 0 35px rgba(37,99,235,0.7);
+}
+
+.logo h2{
+
+    margin-top:18px;
+
+    color:#60a5fa;
+
+    font-size:28px;
+
+    letter-spacing:2px;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu{
+
+    list-style:none;
+}
+
+.menu li{
+
+    margin-bottom:18px;
+}
+
+.menu a{
+
+    text-decoration:none;
+
+    color:#dbeafe;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:17px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.03);
+
+    backdrop-filter:blur(10px);
+
+    transition:0.3s;
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    font-size:15px;
+}
+
+.menu a:hover{
+
+    background:#2563eb;
+
+    transform:translateX(6px);
+
+    box-shadow:
+        0 0 20px rgba(37,99,235,0.5);
+}
+/* ELEMENT ACTIF */
+
+.menu a.active{
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color:white;
+
+    box-shadow:
+        0 0 20px rgba(37,99,235,0.6);
+
+    transform:translateX(6px);
+}
+
+.menu a.active i{
+
+    color:white;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+
+    margin-left:270px;
+
+    padding:35px;
+
+    transition:0.4s ease;
+}
+
+/* MAIN FULL */
+
+.main.full{
+
+    margin-left:0;
+}
+
+/* =========================
+   MENU BUTTON
+========================= */
+
+.menu-toggle{
+
+    position:fixed;
+
+    top:20px;
+    left:20px;
+
+    width:55px;
+    height:55px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    z-index:1000;
+
+    box-shadow:
+        0 0 20px rgba(37,99,235,0.5);
+
+    transition:0.3s;
+}
+
+.menu-toggle:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+        0 0 30px rgba(37,99,235,0.7);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+
+        left:-270px;
+    }
+
+    .sidebar.active{
+
+        left:0;
+    }
+
+    .main{
+
+        margin-left:0;
+    }
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.sidebar::-webkit-scrollbar{
+
+    width:8px;
+}
+
+.sidebar::-webkit-scrollbar-track{
+
+    background:#050816;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.topbar h1{
+    font-size:38px;
+    color:#f8fafc;
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 0 20px rgba(37,99,235,0.5);
+}
+
+.logout{
+    background:#dc2626;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:14px;
+    transition:0.3s;
+}
+
+.logout:hover{
+    background:#ef4444;
+}
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-container{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    padding:35px;
+    border-radius:28px;
+    margin-bottom:35px;
+    box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
+
+.search-title{
+    font-size:26px;
+    margin-bottom:20px;
+    color:#60a5fa;
+}
+
+.search-form{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.search-form input{
+    flex:1;
+    padding:18px;
+    border:none;
+    outline:none;
+    border-radius:16px;
+    background:#0f172a;
+    color:white;
+    font-size:16px;
+    border:1px solid rgba(255,255,255,0.05);
+}
+
+.search-form input:focus{
+    border:1px solid #2563eb;
+    box-shadow:0 0 10px rgba(37,99,235,0.5);
+}
+
+.search-form button{
+    padding:18px 28px;
+    border:none;
+    border-radius:16px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    transition:0.3s;
+}
+
+.search-form button:hover{
+    background:#3b82f6;
+    transform:scale(1.03);
+}
+
+/* =========================
+   SECURITY
+========================= */
+
+.security-box{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.05);
+    padding:30px;
+    border-radius:28px;
+    margin-bottom:30px;
+    backdrop-filter:blur(12px);
+}
+
+.security-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.security-status{
+    padding:10px 18px;
+    border-radius:14px;
+    font-weight:bold;
+}
+
+.secure{
+    background:#14532d;
+    color:#4ade80;
+}
+
+.medium{
+    background:#78350f;
+    color:#facc15;
+}
+
+.dangerous{
+    background:#7f1d1d;
+    color:#f87171;
+}
+
+.progress-container{
+    width:100%;
+    height:34px;
+    background:#0f172a;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.secure-bar{
+    background:#22c55e;
+}
+
+.medium-bar{
+    background:#f59e0b;
+}
+
+.dangerous-bar{
+    background:#ef4444;
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+.results{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+}
+
+.card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.05);
+    padding:30px;
+    border-radius:26px;
+    backdrop-filter:blur(12px);
+    transition:0.3s;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 25px rgba(37,99,235,0.2);
+}
+
+.card h3{
+    color:#60a5fa;
+    margin-bottom:15px;
+    font-size:22px;
+}
+
+.card p{
+    color:#e2e8f0;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+/* =========================
+   PORTS
+========================= */
+
+.ports{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius:28px;
+    padding:30px;
+    margin-top:30px;
+}
+
+.port-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:18px;
+}
+
+.port-box{
+    padding:12px 18px;
+    border-radius:14px;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+    box-shadow:0 0 10px rgba(37,99,235,0.4);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.actions{
+    display:flex;
+    gap:20px;
+    margin-top:35px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    padding:16px 24px;
+    border:none;
+    border-radius:16px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.action-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 20px rgba(37,99,235,0.5);
+}
+
+.qr-btn{
+    background:#06b6d4;
+}
+
+/* =========================
+   QR MODAL
+========================= */
+
+.qr-modal{
+    display:none;
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.85);
+    z-index:9999;
+}
+
+.qr-content{
+    background:#0f172a;
+    width:360px;
+    margin:100px auto;
+    padding:30px;
+    border-radius:28px;
+    text-align:center;
+    position:relative;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.close-btn{
+    position:absolute;
+    top:10px;
+    right:20px;
+    font-size:30px;
+    cursor:pointer;
+}
+
+#error{
+    background:#7f1d1d;
+}
+
+.error{
+    background:#7f1d1d;
+    padding:18px;
+    border-radius:14px;
+    margin-bottom:25px;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#020617;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#2563eb;
+    border-radius:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+    <div class="animated-bg">
+
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+</div>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+<button class="menu-toggle" onclick="toggleSidebar()">
+
+    <i class="fa-solid fa-bars"></i>
+
+</button>
+<div class="sidebar" id="sidebar">
+
+    <div class="logo">
+
+          <img src="{% static 'images/hacker.png' %}" alt="Logo">
+
+        <h2>OSINT PRO</h2>
+
+    </div>
+
+    <ul class="menu">
+
+    <li>
+
+        <a href="/dashboard/?type=ip"
+           class="{% if search_type == 'ip' %}active{% endif %}">
+
+            <i class="fa-solid fa-globe"></i>
+
+            IP Intelligence
+
+        </a>
+
+    </li>
+
+    <li>
+
+        <a href="/dashboard/?type=username"
+           class="{% if search_type == 'username' %}active{% endif %}">
+
+            <i class="fa-solid fa-user-secret"></i>
+
+            Username Search
+
+        </a>
+
+    </li>
+
+    <li>
+
+        <a href="/dashboard/?type=localscan"
+           class="{% if search_type == 'localscan' %}active{% endif %}">
+
+            <i class="fa-solid fa-network-wired"></i>
+
+            Local Network Scan
+
+        </a>
+
+    </li>
+
+    <li>
+
+        <a href="/dashboard/?type=email"
+           class="{% if search_type == 'email' %}active{% endif %}">
+
+            <i class="fa-solid fa-envelope"></i>
+
+            Email Lookup
+
+        </a>
+
+    </li>
+
+</ul>
+
+</div>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h1>Cyber Intelligence Dashboard</h1>
+
+        <div class="user-box">
+
+            <div class="avatar">
+
+                {{ request.user.username|first|upper }}
+
+            </div>
+
+            <a href="/logout/"
+               class="logout">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-container">
+
+        <div class="search-title">
+
+            Search Intelligence Data
+
+        </div>
+
+        <form method="get"
+              class="search-form">
+
+            <input type="hidden"
+                   name="type"
+                   value="{{ request.GET.type }}">
+
+            {% if request.GET.type == "username" %}
+
+                <input type="text"
+                       name="query"
+                       placeholder="Search Username..."
+                       required>
+
+            {% elif request.GET.type == "localscan" %}
+
+                <input type="text"
+                       name="query"
+                       placeholder="192.168.1.0/24"
+                       required>
+
+            {% elif request.GET.type == "email" %}
+
+                <input type="email"
+                       name="query"
+                       placeholder="example@gmail.com"
+                       required>
+
+            {% else %}
+
+                <input type="text"
+                       name="query"
+                       placeholder="Search IP Address..."
+                       required>
+
+            {% endif %}
+
+            <button type="submit">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Search
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ERROR -->
+
+    {% if error %}
+
+    <div class="error">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+    <!-- SECURITY SCORE -->
+
+    {% if security_score %}
+
+    <div class="security-box">
+
+        <div class="security-header">
+
+            <h2>Security Analysis</h2>
+
+            <span class="
+                security-status
+
+                {% if security_level == 'Secure' %}
+                    secure
+                {% elif security_level == 'Medium' %}
+                    medium
+                {% else %}
+                    dangerous
+                {% endif %}
+            ">
+
+                {{ security_level }}
+
+            </span>
+
+        </div>
+
+        <div class="progress-container">
+
+            <div class="
+                    progress-bar
+
+                    {% if security_level == 'Secure' %}
+                        secure-bar
+                    {% elif security_level == 'Medium' %}
+                        medium-bar
+                    {% else %}
+                        dangerous-bar
+                    {% endif %}
+                "
+
+                style="width: {{ security_score }}%;">
+
+                {{ security_score }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- RESULTS -->
+
+    {% if result %}
+
+    <div class="results">
+
+        {% for key, value in result.items %}
+
+        <div class="card">
+
+            <h3>{{ key }}</h3>
+
+            <p>{{ value }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+    <!-- PORTS -->
+
+    {% if ports %}
+
+    <div class="ports">
+
+        <h2>Open Ports</h2>
+
+        <div class="port-list">
+
+            {% for port in ports %}
+
+            <div class="port-box">
+
+                {{ port }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- USERNAME RESULTS -->
+
+    {% if usernames %}
+
+    <div class="results">
+
+        {% for user in usernames %}
+
+        <div class="card">
+
+            <h3>Username Found</h3>
+
+            <p>{{ user }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+    <!-- EMAIL RESULTS -->
+
+    {% if email_result %}
+
+    <div class="results">
+
+        {% for key, value in email_result.items %}
+
+        <div class="card">
+
+            <h3>{{ key }}</h3>
+
+            <p>{{ value }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+    <!-- NETWORK RESULTS -->
+
+    {% if network_devices %}
+
+    <div class="results">
+
+        {% for device in network_devices %}
+
+        <div class="card">
+
+            <h3>{{ device.ip }}</h3>
+
+            <p>{{ device.hostname }}</p>
+
+            <div class="security-header"
+                 style="margin-top:20px;">
+
+                <span class="
+                    security-status
+
+                    {% if device.security_level == 'Secure' %}
+                        secure
+                    {% elif device.security_level == 'Medium' %}
+                        medium
+                    {% else %}
+                        dangerous
+                    {% endif %}
+                ">
+
+                    {{ device.security_level }}
+
+                </span>
+
+            </div>
+
+            <div class="progress-container"
+                 style="margin-top:15px;">
+
+                <div class="
+                    progress-bar
+
+                    {% if device.security_level == 'Secure' %}
+                        secure-bar
+                    {% elif device.security_level == 'Medium' %}
+                        medium-bar
+                    {% else %}
+                        dangerous-bar
+                    {% endif %}
+                "
+
+                style="width: {{ device.security_score }}%;">
+
+                    {{ device.security_score }}%
+
+                </div>
+
+            </div>
+
+            <div class="port-list">
+
+                {% for port in device.open_ports %}
+
+                <div class="port-box">
+
+                    {{ port }}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <a href="/download/?type={{ request.GET.type }}&query={{ request.GET.query }}"
+           class="action-btn">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download Results
+
+        </a>
+
+        <button class="action-btn qr-btn"
+                onclick="openQRModal()">
+
+            <i class="fa-solid fa-qrcode"></i>
+
+            Generate QR
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     QR MODAL
+========================= -->
+
+<div id="qrModal"
+     class="qr-modal">
+
+    <div class="qr-content">
+
+        <span class="close-btn"
+              onclick="closeQRModal()">
+
+            &times;
+
+        </span>
+
+        <h2>Scan Results QR</h2>
+
+        <div id="qrcode"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+function openQRModal(){
+
+    // Ouvrir modal
+    document.getElementById("qrModal").style.display = "block";
+
+    // Nettoyer ancien QR
+    document.getElementById("qrcode").innerHTML = "";
+
+    // =========================
+    // RECUPERATION DES RESULTATS
+    // =========================
+
+    let resultText = "";
+
+    // Cards
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+
+        resultText += card.innerText + "\n\n";
+
+    });
+
+    // Ports
+    const ports = document.querySelectorAll(".port-box");
+
+    if(ports.length > 0){
+
+        resultText += "\nOPEN PORTS:\n";
+
+        ports.forEach(port => {
+
+            resultText += port.innerText + " ";
+
+        });
+
+    }
+
+    // Si vide
+    if(resultText.trim() === ""){
+
+        resultText = "No results available";
+
+    }
+
+    // =========================
+    // GENERATION QR
+    // =========================
+
+    new QRCode(
+        document.getElementById("qrcode"),
+        {
+            text: resultText,
+            width: 250,
+            height: 250,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        }
+    );
+
+}
+
+function closeQRModal(){
+
+    document.getElementById("qrModal").style.display = "none";
+
+}
+
+</script>
+<script>
+
+function toggleSidebar(){
+
+    const sidebar = document.getElementById("sidebar");
+
+    const main = document.querySelector(".main");
+
+    sidebar.classList.toggle("closed");
+
+    main.classList.toggle("full");
+}
+
+</script>
+
+</body>
+</html>
