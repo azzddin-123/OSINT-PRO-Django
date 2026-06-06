@@ -17,9 +17,9 @@ import requests
 # APIs
 # =========================
 
-SHODAN_API_KEY = "7jcsDsIrdg5SiXPUkXmc4POD30wXaZm5"
+SHODAN_API_KEY = "AJOUTER UNE CLE DU SITE SHODANE  https://www.shodan.io/"
 
-HUNTER_API_KEY = "42b50e6dcfdcb19a29838f8cd04731768a2b1a02"
+HUNTER_API_KEY = "AJOUTER UNE CLE DU SITE HUNTER.IO   https://hunter.io/"
 
 
 # =========================
